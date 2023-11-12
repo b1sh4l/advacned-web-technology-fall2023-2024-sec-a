@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ManageUserService } from './manage-user.service';
 import { CreateManageUserDto } from './dto/create-manage-user.dto';
 import { UpdateManageUserDto } from './dto/update-manage-user.dto';
@@ -31,5 +31,31 @@ export class ManageUserController {
   @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.manageUserService.remove(+id);
+  }
+  @Put('edit-username/:id')
+  editUsername(@Param('id') id: string, @Body('newUsername') newUsername: string) {
+    return this.manageUserService.editUsername(+id, newUsername);
+  }
+
+  @Put('remove-profile-picture/:id')
+  removeProfilePicture(@Param('id') id: string) {
+    return this.manageUserService.removeProfilePicture(+id);
+  }
+
+  @Patch('assign-role/:id')
+  assignRole(@Param('id') id: string, @Body('newRole') newRole: string) {
+    return this.manageUserService.assignRole(+id, newRole);
+  }
+
+
+
+  @Put('limit-user-actions/:id')
+  limitUserActions(@Param('id') id: string, @Body('restrictions') restrictions: string[]) {
+    return this.manageUserService.limitUserActions(+id, restrictions);
+  }
+
+  @Put('ban-user/:id')
+  banUser(@Param('id') id: string) {
+    return this.manageUserService.banUser(+id);
   }
 }

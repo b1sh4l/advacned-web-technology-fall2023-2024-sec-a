@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
 import { DirectMessage } from 'src/directmessage/entities/directmessage.entity'; 
 import { GroupMembers } from 'src/groupchat/entities/groupmembers.entity'; 
 import { ServerMembers } from 'src/server/entities/servermembers.entity'; 
@@ -50,6 +50,10 @@ export class Member {
 
     @OneToMany(() => ServerMembers, serverMember => serverMember.member)
     serverMembers: ServerMembers[];
+
+    // @OneToMany(() => ChannelMembers, channelMembers => channelMembers.member)
+    // @JoinColumn({ name: 'member_id' }) 
+    // channelMembers: ChannelMembers[];
 
     // @OneToMany(() => ChannelMembers, channelMember => channelMember.member)
     // channelMembers: ChannelMembers[];

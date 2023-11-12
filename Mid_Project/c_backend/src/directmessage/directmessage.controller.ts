@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DirectmessageService } from './directmessage.service';
 import { CreateDirectmessageDto } from './dto/create-directmessage.dto';
 import { UpdateDirectmessageDto } from './dto/update-directmessage.dto';
 
 @Controller('directmessage')
+
 export class DirectmessageController {
   constructor(private readonly directmessageService: DirectmessageService) {}
 
   @Post()
+  @UsePipes(ValidationPipe) 
   create(@Body() createDirectmessageDto: CreateDirectmessageDto) {
+    //console.log(createDirectmessageDto);
     return this.directmessageService.create(createDirectmessageDto);
   }
 
@@ -22,9 +25,14 @@ export class DirectmessageController {
     return this.directmessageService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDirectmessageDto: UpdateDirectmessageDto) {
-    return this.directmessageService.update(+id, updateDirectmessageDto);
+  @Get('messages/sender/:senderId')
+  getMessagesBySenderId(@Param('senderId') senderId: string) {
+    return this.directmessageService.getMessagesBySenderId(+senderId);
+  }
+
+  @Get('messages/receiver/:receiverId')
+  getMessagesByReceiverId(@Param('receiverId') receiverId: string) {
+    return this.directmessageService.getMessagesByReceiverId(+receiverId);
   }
 
   @Delete(':id')

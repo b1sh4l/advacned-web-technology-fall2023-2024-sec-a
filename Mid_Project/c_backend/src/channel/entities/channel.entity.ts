@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Server } from 'src/server/entities/server.entity'; 
-import { ChannelMembers } from 'src/channel/entities/channelmembers.entity'; 
+import { ChannelMembers } from './channelmembers.entity';
 
 @Entity()
 export class Channel {
@@ -16,6 +16,7 @@ export class Channel {
     @ManyToOne(() => Server, server => server.channels)
     server: Server;
 
-    // @OneToMany(() => ChannelMembers, channelMembers => channelMembers.channel)
-    // channelMembers: ChannelMembers[];
+    @OneToMany(() => ChannelMembers, channelMembers => channelMembers.channel)
+    channelMembers: ChannelMembers[];
 }
+
