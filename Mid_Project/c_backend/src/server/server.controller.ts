@@ -3,9 +3,12 @@ import { ServerService } from './server.service';
 import { CreateServerDto } from './dto/create-server.dto';
 import { UpdateServerDto } from './dto/update-server.dto';
 import { BadRequestException } from '@nestjs/common';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 
 @Controller('server')
+@ApiTags('Server')
+@ApiSecurity('JWT-auth')
 export class ServerController {
   constructor(private readonly serverService: ServerService) {}
 

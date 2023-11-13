@@ -9,9 +9,8 @@ import { NotFoundException } from '@nestjs/common';
 @Injectable()
 export class ManageUserService {
 
-  constructor(@InjectRepository(Member) private readonly memberRepo: Repository<Member>){
+  constructor(@InjectRepository(Member) private readonly memberRepo: Repository<Member>) {}
 
-  }
 
   async create(createManageUserDto: CreateManageUserDto) {
     const user = await this.memberRepo.create(createManageUserDto);
@@ -86,4 +85,6 @@ export class ManageUserService {
     user.is_banned = true;
     return await this.memberRepo.save(user);
   }
+
+
 }

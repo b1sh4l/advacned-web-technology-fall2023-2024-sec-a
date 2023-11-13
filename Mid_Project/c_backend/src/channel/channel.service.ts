@@ -1,40 +1,55 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable , NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Channel } from './entities/channel.entity';
 import { CreateChannelDto } from './dto/create-channel.dto';
 import { UpdateChannelDto } from './dto/update-channel.dto';
-import { ChannelMembers } from './entities/channelmembers.entity';
+import { Channel } from "src/channel/entities/channel.entity";
 
 @Injectable()
 export class ChannelService {
 
   constructor(
-    @InjectRepository(Channel) private readonly channelRepository: Repository<Channel>,
-    @InjectRepository(ChannelMembers) private readonly channelMembersRepository: Repository<ChannelMembers>,
+    @InjectRepository(Channel)
+    private readonly channelRepository: Repository<Channel>,
   ) {}
-  
-  create(createChannelDto: CreateChannelDto) {
-    return 'This action adds a new channel';
+
+  async create(createChannelDto: CreateChannelDto){
+    const channel = this.channelRepository.create(createChannelDto);
+    return await this.channelRepository.save(channel);
   }
 
-  findAll() {
-    return `This action returns all channel`;
+  async findAll(): Promise<Channel[]> {
+    return this.channelRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} channel`;
+  async findOne(id: number): Promise<Channel> {
+    const channel = await this.channelRepository.findOne({where:{id}});
+    if (!channel) {
+      throw new NotFoundException(`Channel with ID ${id} not found`);
+    }
+    return channel;
   }
 
-  update(id: number, updateChannelDto: UpdateChannelDto) {
-    return `This action updates a #${id} channel`;
+  async update(id: number, updateChannelDto: UpdateChannelDto): Promise<Channel> {
+    await this.findOne(id); 
+    await this.channelRepository.update(id, updateChannelDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} channel`;
+  async remove(id: number): Promise<void> {
+    const channel = await this.findOne(id); // Ensure the channel exists
+    await this.channelRepository.remove(channel);
   }
 
-  getHello(): string {
-    return 'Hello World!';
-  }
+  // async sendMessage(id: number, message: string): Promise<Channel> {
+  //   const channel = await this.findOne(id); // Ensure the channel exists
+  //   channel.messages.push(message);
+  //   return await this.channelRepository.save(channel);
+  // }
+
+  // async limitUsers(id: number, maxUsers: number): Promise<Channel> {
+  //   const channel = await this.findOne(id); // Ensure the channel exists
+  //   channel.maxUsers = maxUsers;
+  //   return await this.channelRepository.save(channel);
+  // }
 }

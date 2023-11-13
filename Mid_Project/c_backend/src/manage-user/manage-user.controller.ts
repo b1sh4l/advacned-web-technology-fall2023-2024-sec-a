@@ -1,15 +1,28 @@
-import { Controller, Get, Put, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ManageUserService } from './manage-user.service';
 import { CreateManageUserDto } from './dto/create-manage-user.dto';
 import { UpdateManageUserDto } from './dto/update-manage-user.dto';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import * as bcrypt from 'bcrypt';
+
 
 @Controller('manage-user')
+@ApiTags('Manage User')
+@ApiSecurity("JWT-auth")
 export class ManageUserController {
   constructor(private readonly manageUserService: ManageUserService) {}
 
+  private async hashPassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    return bcrypt.hash(password, saltRounds);
+  }
+
   @Post('create')
-  create(@Body() createManageUserDto: CreateManageUserDto) {
-    return this.manageUserService.create(createManageUserDto);
+  async create(@Body() createManageUserDto: CreateManageUserDto) {
+    const hashedPassword = await this.hashPassword(createManageUserDto.password);
+    const user = { ...createManageUserDto, password: hashedPassword };
+    return this.manageUserService.create(user);
+    //return this.manageUserService.create(createManageUserDto);
   }
 
 

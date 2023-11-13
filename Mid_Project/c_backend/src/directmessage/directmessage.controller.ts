@@ -2,9 +2,11 @@ import { Controller, Get, Post, Patch, Body, Param, Delete, UsePipes, Validation
 import { DirectmessageService } from './directmessage.service';
 import { CreateDirectmessageDto } from './dto/create-directmessage.dto';
 import { UpdateDirectmessageDto } from './dto/update-directmessage.dto';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 @Controller('directmessage')
-
+@ApiTags('Direct Messages')
+@ApiSecurity('JWT-auth')
 export class DirectmessageController {
   constructor(private readonly directmessageService: DirectmessageService) {}
 

@@ -8,5 +8,6 @@ import { ManageUserController } from './manage-user.controller';
   imports: [TypeOrmModule.forFeature([Member])],
   controllers: [ManageUserController],
   providers: [ManageUserService],
+  exports: [ManageUserService],
 })
 export class ManageUserModule {}

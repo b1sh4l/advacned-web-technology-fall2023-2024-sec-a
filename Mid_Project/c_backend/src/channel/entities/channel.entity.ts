@@ -1,22 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Server } from 'src/server/entities/server.entity'; 
-import { ChannelMembers } from './channelmembers.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('Channel')
 export class Channel {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar', length: 255, name: 'channel_name' })
-    channelName: string;
+  @Column({ length: 255 })
+  channel_name: string;
 
-    @Column({ type: 'varchar', length: 50, name: 'channel_type' })
-    channelType: string;
-
-    @ManyToOne(() => Server, server => server.channels)
-    server: Server;
-
-    @OneToMany(() => ChannelMembers, channelMembers => channelMembers.channel)
-    channelMembers: ChannelMembers[];
+  @Column({ length: 50 })
+  channel_type: string;
 }
-

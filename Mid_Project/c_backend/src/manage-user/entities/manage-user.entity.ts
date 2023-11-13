@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 't
 import { DirectMessage } from 'src/directmessage/entities/directmessage.entity'; 
 import { GroupMembers } from 'src/groupchat/entities/groupmembers.entity'; 
 import { ServerMembers } from 'src/server/entities/servermembers.entity'; 
-import { ChannelMembers } from 'src/channel/entities/channelmembers.entity'; 
+//import { ChannelMembers } from 'src/channel/entities/channelmembers.entity'; 
 
 @Entity()
 export class Member {
