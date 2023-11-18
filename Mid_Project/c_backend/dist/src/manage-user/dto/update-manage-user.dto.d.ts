@@ -1,5 +1,12 @@
-import { CreateManageUserDto } from './create-manage-user.dto';
-declare const UpdateManageUserDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateManageUserDto>>;
-export declare class UpdateManageUserDto extends UpdateManageUserDto_base {
+export declare class UpdateManageUserDto {
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    mobileno: string;
+    password: string;
+    profile_picture?: string;
+    member_since: Date;
+    role?: string;
+    is_banned: boolean;
 }
-export {};

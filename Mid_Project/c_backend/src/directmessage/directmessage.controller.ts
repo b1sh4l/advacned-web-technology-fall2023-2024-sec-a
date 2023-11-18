@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Patch, Body, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { UseGuards, Controller, Get, Post, Patch, Body, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { DirectmessageService } from './directmessage.service';
 import { CreateDirectmessageDto } from './dto/create-directmessage.dto';
 import { UpdateDirectmessageDto } from './dto/update-directmessage.dto';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+
+@UseGuards(JwtAuthGuard)
 @Controller('directmessage')
 @ApiTags('Direct Messages')
 @ApiSecurity('JWT-auth')

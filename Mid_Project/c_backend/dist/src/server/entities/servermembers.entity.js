@@ -22,10 +22,12 @@ __decorate([
 ], ServerMembers.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => server_entity_1.Server, server => server.serverMembers),
+    (0, typeorm_1.JoinColumn)({ name: 'server_id' }),
     __metadata("design:type", server_entity_1.Server)
 ], ServerMembers.prototype, "server", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => manage_user_entity_1.Member, member => member.serverMembers),
+    (0, typeorm_1.JoinColumn)({ name: 'member_id' }),
     __metadata("design:type", manage_user_entity_1.Member)
 ], ServerMembers.prototype, "member", void 0);
 __decorate([

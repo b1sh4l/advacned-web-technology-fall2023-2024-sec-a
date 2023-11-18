@@ -16,7 +16,8 @@ exports.DirectmessageController = void 0;
 const common_1 = require("@nestjs/common");
 const directmessage_service_1 = require("./directmessage.service");
 const create_directmessage_dto_1 = require("./dto/create-directmessage.dto");
-const update_directmessage_dto_1 = require("./dto/update-directmessage.dto");
+const swagger_1 = require("@nestjs/swagger");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let DirectmessageController = class DirectmessageController {
     constructor(directmessageService) {
         this.directmessageService = directmessageService;
@@ -30,8 +31,11 @@ let DirectmessageController = class DirectmessageController {
     findOne(id) {
         return this.directmessageService.findOne(+id);
     }
-    update(id, updateDirectmessageDto) {
-        return this.directmessageService.update(+id, updateDirectmessageDto);
+    getMessagesBySenderId(senderId) {
+        return this.directmessageService.getMessagesBySenderId(+senderId);
+    }
+    getMessagesByReceiverId(receiverId) {
+        return this.directmessageService.getMessagesByReceiverId(+receiverId);
     }
     remove(id) {
         return this.directmessageService.remove(+id);
@@ -40,6 +44,7 @@ let DirectmessageController = class DirectmessageController {
 exports.DirectmessageController = DirectmessageController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UsePipes)(common_1.ValidationPipe),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_directmessage_dto_1.CreateDirectmessageDto]),
@@ -59,13 +64,19 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DirectmessageController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Get)('messages/sender/:senderId'),
+    __param(0, (0, common_1.Param)('senderId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_directmessage_dto_1.UpdateDirectmessageDto]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
-], DirectmessageController.prototype, "update", null);
+], DirectmessageController.prototype, "getMessagesBySenderId", null);
+__decorate([
+    (0, common_1.Get)('messages/receiver/:receiverId'),
+    __param(0, (0, common_1.Param)('receiverId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], DirectmessageController.prototype, "getMessagesByReceiverId", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -74,7 +85,10 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DirectmessageController.prototype, "remove", null);
 exports.DirectmessageController = DirectmessageController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('directmessage'),
+    (0, swagger_1.ApiTags)('Direct Messages'),
+    (0, swagger_1.ApiSecurity)('JWT-auth'),
     __metadata("design:paramtypes", [directmessage_service_1.DirectmessageService])
 ], DirectmessageController);
 //# sourceMappingURL=directmessage.controller.js.map

@@ -29,7 +29,7 @@ export class GroupchatService {
   async invite(groupId: number, createGroupMembersDto: CreateGroupMembersDto) {
     const { groupId: newGroupId, memberId } = createGroupMembersDto;
 
-    //console.log('Start of invite method');
+   
     if (groupId !== newGroupId) {
       throw new BadRequestException('Group ID in the URL does not match the one in the request body');
     }
@@ -40,8 +40,8 @@ export class GroupchatService {
       throw new NotFoundException(`Group with ID ${groupId} not found`);
     }
 
-    // Implement logic to check the maximum number of users allowed in a group
-    const maxAllowedMembers = 5; // Adjust this value based on your requirements
+   
+    const maxAllowedMembers = 5; // Adjust 
 
     const currentMembersCount = await this.groupMembersRepository.count({
       where: { id : groupId },
@@ -51,7 +51,7 @@ export class GroupchatService {
       throw new BadRequestException(`Group is already full. Maximum allowed members: ${maxAllowedMembers}`);
     }
 
-    // Check if the user is already a member of the group
+ 
     const existingMember = await this.groupMembersRepository.findOne({
       where: { groupChat: { id: groupId }, member: { id: memberId } } as FindOptionsWhere<GroupMembers>,
     });
@@ -109,6 +109,16 @@ export class GroupchatService {
     await this.groupchatRepository.delete(id);
   
     return `Group with ID ${id} deleted successfully`;
+  }
+
+  async getGroupMembers(groupId: number): Promise<number[]> {
+    const group = await this.groupchatRepository.findOne({ where: { id: groupId }, relations: ['groupMembers'] });
+
+    if (!group) {
+      throw new NotFoundException(`Group with ID ${groupId} not found`);
+    }
+
+    return group.groupMembers.map((groupMember) => groupMember.member[0]);
   }
   
   

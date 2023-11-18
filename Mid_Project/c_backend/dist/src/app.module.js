@@ -16,13 +16,14 @@ const channel_module_1 = require("./channel/channel.module");
 const groupchat_module_1 = require("./groupchat/groupchat.module");
 const directmessage_module_1 = require("./directmessage/directmessage.module");
 const typeorm_1 = require("@nestjs/typeorm");
+const auth_module_1 = require("./auth/auth.module");
 const ormconfig_1 = require("../ormconfig");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [manage_user_module_1.ManageUserModule, server_module_1.ServerModule, channel_module_1.ChannelModule, groupchat_module_1.GroupchatModule, directmessage_module_1.DirectmessageModule, typeorm_1.TypeOrmModule.forRoot(ormconfig_1.default)],
+        imports: [manage_user_module_1.ManageUserModule, server_module_1.ServerModule, channel_module_1.ChannelModule, groupchat_module_1.GroupchatModule, directmessage_module_1.DirectmessageModule, typeorm_1.TypeOrmModule.forRoot(ormconfig_1.default), auth_module_1.AuthModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

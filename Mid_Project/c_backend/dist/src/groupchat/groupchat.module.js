@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GroupchatModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const groupchat_entity_1 = require("./entities/groupchat.entity");
+const groupmembers_entity_1 = require("./entities/groupmembers.entity");
 const groupchat_service_1 = require("./groupchat.service");
 const groupchat_controller_1 = require("./groupchat.controller");
 let GroupchatModule = class GroupchatModule {
@@ -15,6 +18,7 @@ let GroupchatModule = class GroupchatModule {
 exports.GroupchatModule = GroupchatModule;
 exports.GroupchatModule = GroupchatModule = __decorate([
     (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([groupchat_entity_1.GroupChat, groupmembers_entity_1.GroupMembers])],
         controllers: [groupchat_controller_1.GroupchatController],
         providers: [groupchat_service_1.GroupchatService],
     })

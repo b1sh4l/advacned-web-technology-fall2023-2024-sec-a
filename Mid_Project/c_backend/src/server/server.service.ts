@@ -37,6 +37,16 @@ export class ServerService {
     return server;
   }
 
+
+  async update(id: number, updateServerDto: UpdateServerDto) {
+    const server = await this.serverRepo.findOne({where : {id}});
+    Object.keys(updateServerDto).forEach(key => {
+      if (updateServerDto[key] !== undefined) {
+        server[key] = updateServerDto[key];
+      }
+    });
+  }
+
   async updateServerName(id: number, newServerName: string) {
     await this.findOne(id); 
     const server = await this.serverRepo.findOne({ where: { id } });

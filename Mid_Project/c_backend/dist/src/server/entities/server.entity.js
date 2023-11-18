@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
 const typeorm_1 = require("typeorm");
 const servermembers_entity_1 = require("./servermembers.entity");
-const channel_entity_1 = require("../../Channel/entities/channel.entity");
 let Server = class Server {
 };
 exports.Server = Server;
@@ -32,10 +31,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => servermembers_entity_1.ServerMembers, serverMember => serverMember.server),
     __metadata("design:type", Array)
 ], Server.prototype, "serverMembers", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => channel_entity_1.Channel, channel => channel.server),
-    __metadata("design:type", Array)
-], Server.prototype, "channels", void 0);
 exports.Server = Server = __decorate([
     (0, typeorm_1.Entity)()
 ], Server);

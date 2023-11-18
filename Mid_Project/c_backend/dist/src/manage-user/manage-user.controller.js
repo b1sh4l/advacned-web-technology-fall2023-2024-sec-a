@@ -17,12 +17,21 @@ const common_1 = require("@nestjs/common");
 const manage_user_service_1 = require("./manage-user.service");
 const create_manage_user_dto_1 = require("./dto/create-manage-user.dto");
 const update_manage_user_dto_1 = require("./dto/update-manage-user.dto");
+const swagger_1 = require("@nestjs/swagger");
+const bcrypt = require("bcrypt");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let ManageUserController = class ManageUserController {
     constructor(manageUserService) {
         this.manageUserService = manageUserService;
     }
-    create(createManageUserDto) {
-        return this.manageUserService.create(createManageUserDto);
+    async hashPassword(password) {
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    }
+    async create(createManageUserDto) {
+        const hashedPassword = await this.hashPassword(createManageUserDto.password);
+        const user = { ...createManageUserDto, password: hashedPassword };
+        return this.manageUserService.create(user);
     }
     findAll() {
         return this.manageUserService.findAll();
@@ -36,6 +45,24 @@ let ManageUserController = class ManageUserController {
     remove(id) {
         return this.manageUserService.remove(+id);
     }
+    editUsername(id, newUsername) {
+        return this.manageUserService.editUsername(+id, newUsername);
+    }
+    removeProfilePicture(id) {
+        return this.manageUserService.removeProfilePicture(+id);
+    }
+    assignRole(id, newRole) {
+        return this.manageUserService.assignRole(+id, newRole);
+    }
+    limitUserActions(id, restrictions) {
+        return this.manageUserService.limitUserActions(+id, restrictions);
+    }
+    banUser(id) {
+        return this.manageUserService.banUser(+id);
+    }
+    findByEmail(email) {
+        return this.manageUserService.getMemberByEmail(email);
+    }
 };
 exports.ManageUserController = ManageUserController;
 __decorate([
@@ -43,7 +70,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_manage_user_dto_1.CreateManageUserDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ManageUserController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
@@ -73,8 +100,56 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ManageUserController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Put)('edit-username/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('newUsername')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "editUsername", null);
+__decorate([
+    (0, common_1.Put)('remove-profile-picture/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "removeProfilePicture", null);
+__decorate([
+    (0, common_1.Patch)('assign-role/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('newRole')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "assignRole", null);
+__decorate([
+    (0, common_1.Put)('limit-user-actions/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('restrictions')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Array]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "limitUserActions", null);
+__decorate([
+    (0, common_1.Put)('ban-user/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "banUser", null);
+__decorate([
+    (0, common_1.Get)(':email'),
+    __param(0, (0, common_1.Param)('email')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ManageUserController.prototype, "findByEmail", null);
 exports.ManageUserController = ManageUserController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('manage-user'),
+    (0, swagger_1.ApiTags)('Manage User'),
+    (0, swagger_1.ApiSecurity)("JWT-auth"),
     __metadata("design:paramtypes", [manage_user_service_1.ManageUserService])
 ], ManageUserController);
 //# sourceMappingURL=manage-user.controller.js.map

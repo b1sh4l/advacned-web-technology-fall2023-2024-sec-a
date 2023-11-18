@@ -29,6 +29,6 @@ __decorate([
     __metadata("design:type", manage_user_entity_1.Member)
 ], GroupMembers.prototype, "member", void 0);
 exports.GroupMembers = GroupMembers = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)("GroupMembers")
 ], GroupMembers);
 //# sourceMappingURL=groupmembers.entity.js.map

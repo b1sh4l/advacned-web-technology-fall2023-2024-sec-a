@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Channel = void 0;
 const typeorm_1 = require("typeorm");
-const server_entity_1 = require("../../server/entities/server.entity");
 let Channel = class Channel {
 };
 exports.Channel = Channel;
@@ -20,18 +19,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Channel.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 255, name: 'channel_name' }),
+    (0, typeorm_1.Column)({ length: 255 }),
     __metadata("design:type", String)
-], Channel.prototype, "channelName", void 0);
+], Channel.prototype, "channel_name", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'varchar', length: 50, name: 'channel_type' }),
+    (0, typeorm_1.Column)({ length: 50 }),
     __metadata("design:type", String)
-], Channel.prototype, "channelType", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => server_entity_1.Server, server => server.channels),
-    __metadata("design:type", server_entity_1.Server)
-], Channel.prototype, "server", void 0);
+], Channel.prototype, "channel_type", void 0);
 exports.Channel = Channel = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('Channel')
 ], Channel);
 //# sourceMappingURL=channel.entity.js.map

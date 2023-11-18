@@ -1,5 +1,7 @@
 import { CreateChannelDto } from './create-channel.dto';
-declare const UpdateChannelDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreateChannelDto>>;
+declare const UpdateChannelDto_base: import("@nestjs/common").Type<Partial<CreateChannelDto>>;
 export declare class UpdateChannelDto extends UpdateChannelDto_base {
+    channel_name: string;
+    channel_type: string;
 }
 export {};

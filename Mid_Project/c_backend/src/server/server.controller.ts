@@ -1,11 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { UseGuards, Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ServerService } from './server.service';
 import { CreateServerDto } from './dto/create-server.dto';
 import { UpdateServerDto } from './dto/update-server.dto';
 import { BadRequestException } from '@nestjs/common';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
+@UseGuards(JwtAuthGuard)
 @Controller('server')
 @ApiTags('Server')
 @ApiSecurity('JWT-auth')
@@ -29,6 +31,12 @@ export class ServerController {
   findOne(@Param('id') id: string) {
     return this.serverService.findOne(+id);
   }
+
+  // @Patch('update-server-name/:id')
+  // update(@Param('id') id: string, @Body() updateServerDto: UpdateServerDto) {
+  //   return this.serverService.update(+id, updateServerDto);
+  // }
+
 
   @Patch('update-server-name/:id')
   updateServerName(@Param('id') id: string, @Body('newServerName') newServerName: string) {

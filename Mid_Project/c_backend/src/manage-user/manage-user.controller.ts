@@ -4,8 +4,9 @@ import { CreateManageUserDto } from './dto/create-manage-user.dto';
 import { UpdateManageUserDto } from './dto/update-manage-user.dto';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import * as bcrypt from 'bcrypt';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('manage-user')
 @ApiTags('Manage User')
 @ApiSecurity("JWT-auth")
@@ -70,5 +71,10 @@ export class ManageUserController {
   @Put('ban-user/:id')
   banUser(@Param('id') id: string) {
     return this.manageUserService.banUser(+id);
+  }
+
+  @Get(':email')
+  findByEmail(@Param('email') email: string) {
+    return this.manageUserService.getMemberByEmail(email);
   }
 }

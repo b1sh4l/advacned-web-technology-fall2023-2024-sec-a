@@ -17,73 +17,99 @@ const common_1 = require("@nestjs/common");
 const channel_service_1 = require("./channel.service");
 const create_channel_dto_1 = require("./dto/create-channel.dto");
 const update_channel_dto_1 = require("./dto/update-channel.dto");
+const swagger_1 = require("@nestjs/swagger");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let ChannelController = class ChannelController {
     constructor(channelService) {
         this.channelService = channelService;
     }
-    create(createChannelDto) {
-        return this.channelService.create(createChannelDto);
+    async create(createChannelDto) {
+        try {
+            const createdChannel = await this.channelService.create(createChannelDto);
+            return { success: true, data: createdChannel };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
     }
-    findAll() {
-        return this.channelService.findAll();
+    async findAll() {
+        try {
+            const channels = await this.channelService.findAll();
+            return { success: true, data: channels };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
     }
-    findOne(id) {
-        return this.channelService.findOne(+id);
+    async findOne(id) {
+        try {
+            const channel = await this.channelService.findOne(+id);
+            return { success: true, data: channel };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
     }
-    update(id, updateChannelDto) {
-        return this.channelService.update(+id, updateChannelDto);
+    async update(id, updateChannelDto) {
+        try {
+            const updatedChannel = await this.channelService.update(+id, updateChannelDto);
+            return { success: true, data: updatedChannel };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
     }
-    remove(id) {
-        return this.channelService.remove(+id);
-    }
-    getHello() {
-        return this.channelService.getHello();
+    async remove(id) {
+        try {
+            await this.channelService.remove(+id);
+            return { success: true, message: 'Channel deleted successfully' };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
     }
 };
 exports.ChannelController = ChannelController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('create-channel'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_channel_dto_1.CreateChannelDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('channel-list'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('channel/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)('update-channel/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_channel_dto_1.UpdateChannelDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ChannelController.prototype, "remove", null);
-__decorate([
-    (0, common_1.Get)('hello'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], ChannelController.prototype, "getHello", null);
 exports.ChannelController = ChannelController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Controller)('channel'),
+    (0, swagger_1.ApiTags)("Channel"),
+    (0, swagger_1.ApiSecurity)('JWT-auth'),
     __metadata("design:paramtypes", [channel_service_1.ChannelService])
 ], ChannelController);
 //# sourceMappingURL=channel.controller.js.map

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Member } from "src/manage-user/entities/manage-user.entity";
@@ -85,6 +85,18 @@ export class ManageUserService {
     user.is_banned = true;
     return await this.memberRepo.save(user);
   }
+
+  async getMemberByEmail(email: string): Promise<Member | undefined> {
+    const member = await this.memberRepo.findOne({ where: { email } });
+
+    if (!member) {
+        console.log('Member not found for email:', email);
+        throw new BadRequestException('Email not found');
+    }
+
+    return member;
+}
+
 
 
 }

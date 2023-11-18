@@ -25,17 +25,57 @@ let ManageUserService = class ManageUserService {
         const user = await this.memberRepo.create(createManageUserDto);
         return await this.memberRepo.save(user);
     }
-    findAll() {
-        return `This action returns all manageUser`;
+    async findAll() {
+        return await this.memberRepo.find();
     }
     async findOne(id) {
         return await this.memberRepo.findOne({ where: { id: id } });
     }
     async update(id, updateManageUserDto) {
-        return await this.memberRepo.update(id, updateManageUserDto);
+        const member = await this.memberRepo.findOne({ where: { id } });
+        Object.keys(updateManageUserDto).forEach(key => {
+            if (updateManageUserDto[key] !== undefined) {
+                member[key] = updateManageUserDto[key];
+            }
+        });
+        await this.memberRepo.save(member);
+        const updatedMember = await this.memberRepo.findOne({ where: { id } });
+        return updatedMember;
     }
     async remove(id) {
         return await this.memberRepo.delete(id);
+    }
+    async editUsername(id, newUsername) {
+        const user = await this.findOne(id);
+        user.username = newUsername;
+        return await this.memberRepo.save(user);
+    }
+    async removeProfilePicture(id) {
+        const user = await this.findOne(id);
+        user.profile_picture = null;
+        return await this.memberRepo.save(user);
+    }
+    async assignRole(id, newRole) {
+        const user = await this.memberRepo.findOne({ where: { id } });
+        user.role = newRole;
+        return await this.memberRepo.save(user);
+    }
+    async limitUserActions(id, restrictions) {
+        const user = await this.findOne(id);
+        return await this.memberRepo.save(user);
+    }
+    async banUser(id) {
+        const user = await this.findOne(id);
+        user.is_banned = true;
+        return await this.memberRepo.save(user);
+    }
+    async getMemberByEmail(email) {
+        const member = await this.memberRepo.findOne({ where: { email } });
+        if (!member) {
+            console.log('Member not found for email:', email);
+            throw new common_1.BadRequestException('Email not found');
+        }
+        return member;
     }
 };
 exports.ManageUserService = ManageUserService;

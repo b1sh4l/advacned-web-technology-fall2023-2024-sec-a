@@ -6,8 +6,9 @@ import { UpdateGroupchatDto } from './dto/update-groupchat.dto';
 import { BadRequestException } from '@nestjs/common';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('groupchat')
 //@UseGuards(AuthGuard("local"))
 @ApiTags('Group Chat')
@@ -15,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class GroupchatController {
   constructor(private readonly groupchatService: GroupchatService) {}
 
-  @Post()
+  @Post('create-group')
   async create(@Body() createGroupchatDto: CreateGroupchatDto) {
     try {
       const createdGroup = await this.groupchatService.create(createGroupchatDto);
@@ -25,7 +26,7 @@ export class GroupchatController {
     }
   }
 
-  @Get()
+  @Get('groups')
   async findAll() {
     try {
       const groups = await this.groupchatService.findAll();
@@ -35,7 +36,7 @@ export class GroupchatController {
     }
   }
 
-  @Get(':id')
+  @Get('group/:id')
   async findOne(@Param('id') id: string) {
     try {
       const group = await this.groupchatService.findOne(+id);
@@ -45,7 +46,7 @@ export class GroupchatController {
     }
   }
 
-  @Patch(':id')
+  @Patch('update-group/:id')
   async update(@Param('id') id: string, @Body() updateGroupchatDto: UpdateGroupchatDto) {
     try {
       const updatedGroup = await this.groupchatService.update(+id, updateGroupchatDto);
@@ -68,7 +69,7 @@ export class GroupchatController {
     }
   }
 
-  @Delete(':id')
+  @Delete('delete/:id')
   async remove(@Param('id') id: string) {
     try {
       await this.groupchatService.remove(+id); // Parse id to a number
@@ -77,4 +78,14 @@ export class GroupchatController {
       return { message: 'Failed to delete group', error: error.message };
     }
   }
+  
+  // @Get('group-members/:groupId')
+  // async getGroupMembers(@Param('groupId') groupId: string) {
+  //   try {
+  //     const groupMembers = await this.groupchatService.getGroupMembers(+groupId);
+  //     return { groupMembers };
+  //   } catch (error) {
+  //     return { message: 'Failed to fetch group members', error: error.message };
+  //   }
+  // }
 }

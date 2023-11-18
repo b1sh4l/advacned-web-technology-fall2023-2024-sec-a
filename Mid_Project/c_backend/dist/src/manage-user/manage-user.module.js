@@ -20,6 +20,7 @@ exports.ManageUserModule = ManageUserModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([manage_user_entity_1.Member])],
         controllers: [manage_user_controller_1.ManageUserController],
         providers: [manage_user_service_1.ManageUserService],
+        exports: [manage_user_service_1.ManageUserService],
     })
 ], ManageUserModule);
 //# sourceMappingURL=manage-user.module.js.map

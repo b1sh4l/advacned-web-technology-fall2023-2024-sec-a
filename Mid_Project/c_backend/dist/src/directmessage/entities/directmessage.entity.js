@@ -20,11 +20,13 @@ __decorate([
     __metadata("design:type", Number)
 ], DirectMessage.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => manage_user_entity_1.Member, member => member.sentMessages),
+    (0, typeorm_1.ManyToOne)(() => manage_user_entity_1.Member, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'sender_id' }),
     __metadata("design:type", manage_user_entity_1.Member)
 ], DirectMessage.prototype, "sender", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => manage_user_entity_1.Member, member => member.receivedMessages),
+    (0, typeorm_1.ManyToOne)(() => manage_user_entity_1.Member, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)({ name: 'receiver_id' }),
     __metadata("design:type", manage_user_entity_1.Member)
 ], DirectMessage.prototype, "receiver", void 0);
 __decorate([
@@ -32,10 +34,10 @@ __decorate([
     __metadata("design:type", String)
 ], DirectMessage.prototype, "messageContent", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp' }),
+    (0, typeorm_1.Column)({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', name: 'timestamp' }),
     __metadata("design:type", Date)
 ], DirectMessage.prototype, "timestamp", void 0);
 exports.DirectMessage = DirectMessage = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('DirectMessages')
 ], DirectMessage);
 //# sourceMappingURL=directmessage.entity.js.map
