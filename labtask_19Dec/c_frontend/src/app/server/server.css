@@ -2,11 +2,21 @@
 div {
     margin: 20px; 
   }
+
+  .server-body {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px; 
+  }
   
 
   h1.create-server {
     font-size: 24px;
     color: #333;
+  }
+
+  li {
+    margin-bottom: 10px; /* Add some space between list items */
   }
   
 

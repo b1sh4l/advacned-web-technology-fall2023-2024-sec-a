@@ -57,7 +57,7 @@ const Server: React.FC<ServerProps> = () => {
   };
 
   return (
-    <div>
+    <div className="server-body">
       <h1>Server List</h1>
       <ul>
         {serverList.map((server) => (
