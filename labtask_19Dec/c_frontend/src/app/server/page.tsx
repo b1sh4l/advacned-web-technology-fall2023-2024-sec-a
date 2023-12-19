@@ -34,7 +34,7 @@ const Server: React.FC<ServerProps> = () => {
   useEffect(() => {
     // Call the fetchServerList function when the component mounts
     fetchServerList();
-  }, []); // The empty dependency array ensures that this effect runs once when the component mounts
+  }, []); 
 
   const handleCreateServer = async () => {
     try {
@@ -49,7 +49,7 @@ const Server: React.FC<ServerProps> = () => {
 
       console.log("Server created:", response.data);
 
-      // After creating the server, fetch the updated server list
+    
       fetchServerList();
     } catch (error) {
       console.error("Error creating server:", error as Error);
@@ -58,12 +58,11 @@ const Server: React.FC<ServerProps> = () => {
 
   return (
     <div>
-      {/* Your existing code goes here */}
       <h1>Server List</h1>
       <ul>
         {serverList.map((server) => (
           <li key={server.id}>
-            Server Name: {server.serverName}, Category: {server.serverCategory}
+           {server.serverName}
           </li>
         ))}
       </ul>
