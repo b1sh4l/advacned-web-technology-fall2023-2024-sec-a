@@ -13,6 +13,7 @@ interface ServerData {
 }
 
 const Server: React.FC<ServerProps> = () => {
+  const [showForm, setShowForm] = useState(false);
   const [serverName, setServerName] = useState("");
   const [serverCategory, setServerCategory] = useState("");
   const [serverList, setServerList] = useState<ServerData[]>([]);
@@ -36,7 +37,12 @@ const Server: React.FC<ServerProps> = () => {
     fetchServerList();
   }, []); 
 
-  const handleCreateServer = async () => {
+  const handleCreateServer = () => {
+    setShowForm(true);
+  };
+
+  const handleSubmit = async () => {
+    
     try {
       if (!serverName) {
         throw new Error("Server name is required.");
@@ -48,9 +54,9 @@ const Server: React.FC<ServerProps> = () => {
       });
 
       console.log("Server created:", response.data);
-
-    
+      setShowForm(false);
       fetchServerList();
+      
     } catch (error) {
       console.error("Error creating server:", error as Error);
     }
@@ -58,7 +64,28 @@ const Server: React.FC<ServerProps> = () => {
 
   return (
     <div className="server-body">
-      <h1>Server List</h1>
+      <h1 className="server-list">Server List</h1>
+      {!showForm ? (
+        <button className="btn-createserver" onClick={handleCreateServer}>
+          Create Server
+        </button>
+      ) : (
+        <div>
+          <input
+            type="text"
+            placeholder="Server Name"
+            value={serverName}
+            onChange={(e) => setServerName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Server Category"
+            value={serverCategory}
+            onChange={(e) => setServerCategory(e.target.value)}
+          />
+          <button onClick={handleSubmit}>Submit</button>
+        </div>
+      )}
       <ul>
         {serverList.map((server) => (
           <li key={server.id}>
@@ -66,6 +93,7 @@ const Server: React.FC<ServerProps> = () => {
           </li>
         ))}
       </ul>
+      
     </div>
   );
 };

@@ -4,10 +4,12 @@ div {
   }
 
   .server-body {
+    border-radius: 15px;
     background-color: #fff;
     margin: 20px;
     padding: 20px; 
   }
+  
   
 
   h1.create-server {
